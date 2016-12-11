@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition
+        xmlns:fb="http://www.facebook.com/2008/fbml">
+        <h:head>
+            <title>Facelet Title</title>
+
+
+            <link rel="stylesheet" href="css/style.css"/>
+        </h:head>
+
+
+        <style type="text/css">
+            body{
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                overflow: auto;
+                background: url(img/background/graydark.jpg);
+            }
+
+
+            .navi-menu{
+                width: 100%;
+                border-color: #3F3F3F;
+                border-left: 0px;
+                border-right: 0px;
+                min-height: 45px;
+                margin-bottom: 0px;
+            }
+
+            .navi-menu:before{
+                display: table;
+                content: " ";
+            }
+
+            .container {
+                width: 100%;
+                padding-right: 0px;
+                padding-left: 0px;
+                overflow: hidden;
+            }
+            .container:before{
+                display: table;
+                content: " ";
+            }
+            .fb-login-button{
+                margin: 0px 3px 0px 534px;
+            }
+
+            .container>.nav-logo, .container>.nav-control{
+                margin-right: 0;
+                margin-left: 0;
+            }
+            .nav-control{
+                display: block!important;
+                height: auto!important;
+                padding-bottom: 0;
+                overflow: visible!important;
+            }
+            .nav{
+                padding-left: 0;
+                margin-bottom: 0;
+                list-style: none;
+
+            }
+
+            #formup{
+                margin: 0 auto 0 auto;
+                width: auto;
+                text-align: center;
+                position: relative;
+                display: block;
+                padding: 0px 0;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+
+
+            }
+
+
+        </style>
+
+
+        <script type="text/javascript">
+            // This is called with the results from from FB.getLoginStatus().
+            function statusChangeCallback(response) {
+                console.log('statusChangeCallback');
+                console.log(response);
+                // The response object is returned with a status field that lets the
+                // app know the current login status of the person.
+                // Full docs on the response object can be found in the documentation
+                // for FB.getLoginStatus().
+
+                if (response.status === 'connected') {
+                    // Logged into your app and Facebook.
+                    testAPI();
+                } else if (response.status === 'not_authorized') {
+                    // The person is logged into Facebook, but not your app.
+                    document.getElementById('status').innerHTML = 'Please log ' +
+                            'into this app.';
+                } else {
+                    // The person is not logged into Facebook, so we're not sure if
+                    // they are logged into this app or not.
+                    document.getElementById('status').innerHTML = 'Please log ' +
+                            'into Facebook.';
+                }
+            }
+
+            // This function is called when someone finishes with the Login
+            // Button.  See the onlogin handler attached to it in the sample
+            // code below.
+            function checkLoginState() {
+                FB.getLoginStatus(function (response) {
+                    statusChangeCallback(response);
+                });
+            }
+
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: '1592573221002548',
+                    xfbml: true,
+                    version: 'v2.5'
+                });
+
+
+                FB.Event.subscribe("auth.logout", function () {
+                    window.location = '/webmmc/faces/facebookCad.xhtml'
+                });
+                // Now that we've initialized the JavaScript SDK, we call 
+                // FB.getLoginStatus().  This function gets the state of the
+                // person visiting this page and can return one of three states to
+                // the callback you provide.  They can be:
+                //
+                // 1. Logged into your app ('connected')
+                // 2. Logged into Facebook, but not your app ('not_authorized')
+                // 3. Not logged into Facebook and can't tell if they are logged into
+                //    your app or not.
+                //
+                // These three cases are handled in the callback function.
+
+                FB.getLoginStatus(function (response) {
+                    statusChangeCallback(response);
+                });
+            };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            // Here we run a very simple test of the Graph API after login is
+            // successful.  See statusChangeCallback() for when this call is made.
+            function testAPI() {
+                console.log('Welcome!  Fetching your information.... ');
+                FB.api('/me', function (response) {
+                    console.log('Successful login for: ' + response.name);
+                    document.getElementById('status').innerHTML =
+                            'Olá, ' + response.name + '!';
+                });
+            }
+        </script>
+
+
+
+        <h:body>
+
+
+            <p:layoutUnit position="north">
+
+                <h:form id="formup" >
+                    <p:panel>
+                        <h:panelGrid id="loginPanel"  cellpadding="1" >
+                            <h:panelGrid style="border-left: 200px solid seagreen;
+                                         border-top-left-radius: 2px;
+                                         border-bottom-left-radius: 2px;
+                                         margin: -16px 1px -70px -25px;
+                                         width: 139px;
+                                         // height: 120px;">
+
+                                <a style="background-image: url('img/logo/logo_P.png');
+                                   text-indent: -99999px;
+                                   padding: 0px;
+                                   width: 76px;
+                                   height: 76px;
+                                   display: block;
+                                   margin: 7px -5px 11px -145px;
+                                   background-repeat: no-repeat; " href="index.xhtml">
+                                </a>
+                            </h:panelGrid>
+
+                            <p:growl id="messages"/>
+
+                            <p:menubar style="margin: -32px 172px -3px 205px">
+
+                                
+                                <p:menuitem value="Home" url="index.xhtml" icon="ui-icon-document"/>
+                                <p:menuitem value="Filmes" url="musicasmmc.xhtml" icon="icon-music" />
+                                <p:menuitem value="Musicas" url="filmemmc.xhtml" icon="ui-icon-document"/>
+
+                                <p:menuitem value="Quit" url="http://www.primefaces.org" icon="ui-icon-close" />
+
+                                <f:facet name="options">
+                                    <p:inputText style="margin: 0px 0px 0px 20px;" placeholder="Search"/>
+                                </f:facet>
+
+                            </p:menubar>
+
+
+
+
+
+
+                            <div id="fb-root"></div>
+                            <script>(function (d, s, id) {
+                                    var js, fjs = d.getElementsByTagName(s)[0];
+                                    if (d.getElementById(id))
+                                        return;
+                                    js = d.createElement(s);
+                                    js.id = id;
+                                    js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version;=v2.5&appId;=1592573221002548";
+                                    fjs.parentNode.insertBefore(js, fjs);
+                                }(document, 'script', 'facebook-jssdk'));</script>
+
+
+                            <div class="fb-login-button" data-max-rows="1" 
+                                 data-size="medium" data-show-faces="false" 
+                                 data-auto-logout-link="true"></div>
+                            <div id="status" style="margin: 0px 3px 0px 534px; font-size: 7.5px; font-weight: bold; ">
+                            </div>
+
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+
+            </p:layoutUnit>
+
+
+
+
+            <h:form id="form">
+
+
+                <p:dataGrid var="filme" value="#{filmeBean.filmes}" columns="3"
+                            rows="12" paginator="true" id="filmes"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="6,12,16">
+
+                    <f:facet name="header">
+                        Cars for Sale
+                    </f:facet>
+
+                    <p:panel header="#{filme.id}" style="text-align:center">
+                        <h:panelGrid columns="1" style="width:100%">
+                            <p:graphicImage name="#{filme.foto}"/> 
+
+                            <h:outputText value="#{filme.tituloFilme}" />
+
+                            <p:commandLink update=":form:filmes" oncomplete="PF('carDialog').show()" title="View Detail">
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                <f:setPropertyActionListener value="#{filme}" target="#{filmeBean.filme}" />
+                            </p:commandLink>
+                        </h:panelGrid>
+                    </p:panel>
+
+                </p:dataGrid>
+
+                <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="carDetail" style="text-align:center;">
+
+
+
+                        <div id="video-container">
+                            <!-- Video -->
+                            <video id="video" width="640" height="365">
+                                <source src="vid1.mp4" type="video/webm"/>
+                                <source src="vid1.mp4" type="video/ogv"/>
+                                <source src="vid1.mp4" type="video/mp4"/>
+                                <p>
+                                    Your browser doesn't support HTML5 video.
+                                    <a href="vid1.mp4">Download</a> the video instead.
+                                </p>
+                            </video>
+                            <!-- Video Controls -->
+                            <div id="video-controls">
+                                <button type="button" id="play-pause">Play</button>
+                                <input type="range" id="seek-bar" value="0"/>
+                                <button type="button" id="mute">Mute</button>
+                                <input type="range" id="volume-bar" min="0" max="1" step="0.1" value="1"/>
+
+                                <button type="button" id="full-screen">Full-Screen</button>
+                            </div>
+                        </div>
+
+
+
+                        <script src="js/script.js"></script>
+
+                        <p:panelGrid  columns="2" rendered="#{not empty filmeBean.filme}" columnClasses="label,value">
+                            <f:facet name="header">
+                                <p:graphicImage name="#"/> 
+                            </f:facet>
+
+
+                            <h:outputText value="Id:" />
+                            <h:outputText value="#{filmeBean.filme.id}" />
+
+                            <h:outputText value="Year" />
+                            <h:outputText value="#{filmeBean.filme.diretor}" />
+
+                            <h:outputText value="Color:" />
+                            <h:outputText value="#{filmeBean.filme.generoFilme.descricao}" />
+
+                            <h:outputText value="Price" />
+                            <h:outputText value="$#{filmeBean.filme.dataCad}" />
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+
+        </h:body>
+    </ui:composition>
+</html>
+

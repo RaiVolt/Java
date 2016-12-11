@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+        <h:body rendered="#{loginBean.verificaSessao()}">
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" header="Área Administrativa" resizable="false" closable="false" collapsible="false">
+                    
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" header="Desenvolvido por Rafael Machado" resizable="false" closable="false" collapsible="false">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="250"  header="Menu" resizable="false" closable="false" collapsible="true">
+                    <h:form>
+                        <p:growl autoUpdate="true"/>
+
+                        <p:panelMenu>
+                            <p:submenu label="Home">
+                                <p:menuitem value="Principal"  url="principal.xhtml"/>
+                                <p:menuitem  value="Sair" action="#{loginBean.fecharSessao}"/>
+                            </p:submenu>
+                            
+                            <p:submenu label="Cadastro">
+                                <p:submenu label="Músicas">
+                                    <p:menuitem value="Album" url="Album.xhtml" />
+                                    <p:menuitem value="Artista" url="Artista.xhtml" />
+                                    <p:menuitem value="Musica"  url="Musica.xhtml"/>
+                                    <p:menuitem value="Genero Música"  url="GenMusica.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Filmes">
+                                    <p:menuitem value="Ator" url="Ator.xhtml"/>
+                                    <p:menuitem value="Filme"  url="Filme.xhtml"/>
+                                    <p:menuitem value="Genero Filme" url="GenFilme.xhtml"/>
+                                    <p:menuitem value="Diretor" url="Diretor.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Usuários">
+                                    <p:menuitem value="Usuário" url="User.xhtml"/>
+                                    <p:menuitem value="Estado" url="Estado.xhtml"/>
+                                    <p:menuitem value="Cidade" url="Cidade.xhtml"/>
+                                    <p:menuitem value="Tipo" url="Tipo.xhtml"/>
+                                    <p:menuitem value="Playlist" url="Playlist.xhtml"/>    
+                                </p:submenu>
+                            </p:submenu>
+                            
+                            <p:submenu label="Gráficos">
+                                <p:menuitem value="Tipo" url="Tipo.xhtml"/>
+                                <p:menuitem value="Playlist" url="Playlist.xhtml"/>
+                            </p:submenu>
+                            
+                            <p:submenu label="Backup">
+                                <p:menuitem value="Backup" url="backup.xhtml"/>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="false" closable="false" collapsible="false">
+                    <p:graphicImage value="img/logo/logo.png" style="padding: 40px 10px 10px 450px"></p:graphicImage>
+                    <h1 style="padding: 10px 10px 10px 300px"> BEM VINDO AO MULTIMÍDIA MAGIC
+                        
+                    </h1>
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

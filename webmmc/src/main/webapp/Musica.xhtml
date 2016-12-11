@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+        <h:body rendered="#{loginBean.verificaSessao()}">
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" header="Área Administrativa" resizable="false" closable="false" collapsible="false">
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" header="Desenvolvido por Rafael Machado" resizable="false" closable="false" collapsible="false">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="250"  resizable="false" closable="false" header="Menu" collapsible="true">
+                    <h:form>
+                        <p:growl autoUpdate="true"/>
+
+                        <p:panelMenu>
+                            <p:submenu label="Arquivo">
+                                <p:menuitem value="Principal"  url="principal.xhtml"/>
+                                <p:menuitem  value="Sair" action="#{loginBean.fecharSessao}"/>
+                            </p:submenu>
+                            <p:submenu label="Cadastro">
+                                <p:submenu label="Músicas">
+                                    <p:menuitem value="Album" url="Album.xhtml" />
+                                    <p:menuitem value="Artista" url="Artista.xhtml" />
+                                    <p:menuitem value="Musica"  url="Musica.xhtml"/>
+                                    <p:menuitem value="Genero Música"  url="GenMusica.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Filmes">
+                                    <p:menuitem value="Ator" url="Ator.xhtml"/>
+                                    <p:menuitem value="Filme"  url="Filme.xhtml"/>
+                                    <p:menuitem value="Genero Filme" url="GenFilme.xhtml"/>
+                                    <p:menuitem value="Diretor" url="Diretor.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Usuários">
+                                    <p:menuitem value="Usuário" url="User.xhtml"/>
+                                    <p:menuitem value="Estado" url="Estado.xhtml"/>
+                                    <p:menuitem value="Cidade" url="Cidade.xhtml"/>
+                                    <p:menuitem value="Tipo" url="Tipo.xhtml"/>
+                                    <p:menuitem value="Playlist" url="Playlist.xhtml"/>    
+                                </p:submenu>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="false" closable="false" collapsible="false">
+                    <p:growl id="mensagem" />
+
+                    <h:form id="formListagem">
+                        <p:panel header="Música - Listagem">
+                            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                                         paginator="true" value="#{musicaBean.musicas}" var="musica" rows="5">
+                                <f:facet name="header">
+                                    <p:commandButton value="Novo" actionListener="#{musicaBean.novo}"
+                                                     oncomplete="PF('dialogo').show();"
+                                                     update=":mensagem :formCadastro:painel" />
+                                </f:facet>
+
+                                <p:column headerText="ID" sortBy="#{musica.id}"
+                                          filterBy="#{musica.id}">
+                                    <h:outputText value="#{musica.id}" />
+                                </p:column>
+                                
+                                
+                                <p:column headerText="Música" sortBy="#{musica.tituloMusica}"
+                                          filterBy="#{musica.tituloMusica}">
+                                    <h:outputText value="#{musica.tituloMusica}" />
+                                </p:column>
+                                
+                                
+                                <p:column headerText="Duração" sortBy="#{musica.duracao}"
+                                          filterBy="#{musica.duracao}">
+                                    <h:outputText value="#{musica.duracao}" />
+                                    <h:outputText value="min" />
+                                </p:column>
+                                
+                                
+                                <p:column headerText="Data Cad." sortBy="#{musica.dataCad}"
+                                          filterBy="#{musica.dataCad}">
+                                    <h:outputText value="#{musica.dataCad}" >
+                                    <f:convertDateTime locale="pt_BR"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column headerText="Album" filterBy="#{musica.album.nome}"
+                                          sortBy="#{musica.album.nome}">
+                                    <h:outputText value="#{musica.album.nome}" />
+                                </p:column>
+
+                                <p:column headerText="Artista" filterBy="#{musica.artista.nome}"
+                                          sortBy="#{musica.artista.nome}">
+                                    <h:outputText value="#{musica.artista.nome}" />
+                                </p:column>
+
+                                <p:column headerText="Gênero" filterBy="#{musica.generoMusica.descricao}"
+                                          sortBy="#{musica.generoMusica.descricao}">
+                                    <h:outputText value="#{musica.generoMusica.descricao}" />
+                                </p:column>
+                                
+                                <p:column headerText="Opções">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     actionListener="#{musicaBean.excluir}"
+                                                     update=":mensagem :formListagem:tabela">
+                                        <p:confirm header="Confirmação" message="Deseja excluir a cidade"
+                                                   icon="ui-icon-alert" />
+                                        <f:attribute name="albumSelecionado" value="#{musica}" />
+                                    </p:commandButton>
+
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     actionListener="#{musicaBean.editar}"
+                                                     update=":mensagem :formCadastro:painel"
+                                                     oncomplete="PF('dialogo').show();">
+                                        <f:attribute name="albumSelecionado" value="#{musica}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:confirmDialog global="true">
+                                <p:commandButton value="Sim" type="button"
+                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button"
+                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:panel>
+                    </h:form>
+
+                    <p:dialog header="Música - Cadastro" widgetVar="dialogo"
+                              draggable="false" resizable="false" modal="false" closable="false">
+                        <h:form id="formCadastro">
+                            <h:panelGrid id="painel" columns="2">
+                                <p:outputLabel value="Música:" />
+                                <p:inputText maxlength="50" size="30"
+                                             value="#{musicaBean.musica.tituloMusica}" />
+                                
+                                
+                                <p:outputLabel value="Duração:" />
+                                <p:inputText maxlength="50" size="30"
+                                             value="#{musicaBean.musica.duracao}" />
+                                
+                                
+                                
+                                <p:outputLabel value="Data Cad.:" />
+                                <p:calendar/>
+
+                                <p:outputLabel value="Album:" />
+                                <p:selectOneMenu filter="true" value="#{musicaBean.musica.album}"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Album" />
+                                    <f:selectItems value="#{musicaBean.albums}" var="album"
+                                                   itemValue="#{album}" itemLabel="#{album.nome}" />
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Artista:" />
+                                <p:selectOneMenu filter="true" value="#{musicaBean.musica.artista}"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Artista" />
+                                    <f:selectItems value="#{musicaBean.artistas}" var="artista"
+                                                   itemValue="#{artista}" itemLabel="#{artista.nome}" />
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Gênero:" />
+                                <p:selectOneMenu filter="true" value="#{musicaBean.musica.generoMusica}"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Gênero" />
+                                    <f:selectItems value="#{musicaBean.generoMusicas}" var="generoMusica"
+                                                   itemValue="#{generoMusica}" itemLabel="#{generoMusica.descricao}" />
+                                </p:selectOneMenu>
+                                
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" actionListener="#{musicaBean.salvar}"
+                                                 update=":mensagem :formCadastro:painel :formListagem:tabela" />
+                                <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                            </h:panelGrid>
+                        </h:form>
+                    </p:dialog>
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

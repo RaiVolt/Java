@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+                 <title>JPlayer Playlist - Web Magazine Devmedia</title>
+                 <link href="css/jplayer.blue.monday.css" rel="stylesheet" type="text/css">
+                 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/JavaScript" src="http://demo.chapmanit.com/jplayerPlaylist/js/jquery.jplayer.min.js"></script>
+                 <script type="text/JavaScript">
+              
+                   $(document).ready(function(){
+      12           // Variável responsável por guardar o item atual de execução
+              13           var playItem = 0;
+              14
+              15           /*
+               16                  Lista com todas as músicas a serem executadas na playlist.
+               17                  Em uma aplicação dinâmica, os valores provavelmente serão montados a partir de uma linguagem server side.
+               18           */
+              19           var minhaPlayList = [
+                      20                  {name:"Daft Punk - Human After All", mp3:"songs/human-after-all.mp3"},
+                      21                  {name:"Amy Winehouse - You Know I'm No Good", mp3:"songs/you-know-im-no-good.mp3"},
+                      22                  {name:"Black Eyed Peas - Shut Up", mp3:"songs/shut-up.mp3"},
+                      23                  {name:"Nightwish - Ghost River", mp3:"songs/ghost-river.mp3"},
+                      24                  {name:"Daft Punk - Technologic", mp3:"songs/technologic.mp3"}
+              25           ];
+              26
+              27           /* Cópias locais para os seletores jQuery, apenas para performance */
+              28           // Guarda o tempo atual de execução
+              29           var jpTempoExecucao = $("#jplayer_tempo_execucao");
+              30           // Guarda o tempo total de execução
+              31           var jpTempoTotal = $("#jplayer_tempo_total");
+              32
+              33           // Função de criação e configuração do p layer.
+      34           $("#jquery_jplayer").jPlayer({
+      35                  ready: function() {
+              36                         exibirPlayList();
+               37                         playListInit(true); // Parâmetro é um para autoplay.
+               38                  },
+              39                  oggSupport: false
+              40           })
+              41            // Configurações gerais do player
+                      42.jPlayer("onProgressChange", function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+                      43                  jpTempoExecucao.text($.jPlayer.convertTime(playedTime));
+                      44                  jpTempoTotal.text($.jPlayer.convertTime(totalTime));
+                      45           })
+                      46.jPlayer("onSoundComplete", function() {
+              47                  playListProximo();
+              48           });
+              49
+              50           // Captura o evento de clique para o botão de anterior
+              51           $("#jplayer_anterior").click(function() {
+              52                  playListAnterior();
+              53                  $(this).blur();
+              54                 return false;
+              55           });
+              56
+      57           // Captura o evento de clique para o botão de próximo
+              58           $("#jplayer_proximo").click(function() {
+      59                  playListProximo();
+              60                  $(this).blur();
+              61                  return false;
+              62           });
+              63
+              64           // Método interno de montagem e exibição da playlist
+              65           function exibirPlayList() {
+              66                  $("#jplayer_playlist ul").empty();
+                      67                  for (i = 0; i < minhaPlayList.length; i++) {
+              68              var listItem = (i == minhaPlayList.length - 1) ? "<li class='jplayer_playlist_ultimo_item'>" : "<li>";
+              69                         listItem += "<a href='#' id='jplayer_playlist_item_" + i + "' tabindex='1'>" + minhaPlayList[i].name + "</a> (<a id='jplayer_playlist_get_mp3_" + i + "' href='" + minhaPlayList[i].mp3 + "' tabindex='1'>mp3</a>)</li>";
+              70                         $("#jplayer_playlist ul").append(listItem);
+              71                         $("#jplayer_playlist_item_" + i).data("index", i).click(function() {
+              72                                var index = $(this).data("index");
+              73                                if (playItem != index) {
+                      74                                      mudarPlayList(index);
+              75                                } else {
+              76                                        $("#jquery_jplayer").jPlayer("play");
+                      77                                }               78                                    $(this).blur ();
+                       79                                retur n   f alse;
+                      80                         });
+                      81                         $("#jplayer_playlist_get_mp3_" + i).data("index", i).click(function() {
+              82                                  var index = $(this).data("index");
+                      83                                $("#jplayer_playlist_item_" + index).trigger("click");
+                      84                                $(this).blur();
+                      85                                return false;
+                      86                         });
+                      87                  }
+              88           }
+      89
+              90           // Inicializa a playlist
+              91           function playListInit(autoplay) {
+              92                  if (autoplay) {
+              93                         mudarPlayList(playItem);
+                      94                  } else {
+              95                         playListConfig(playItem);
+                      96                  }
+              97           }
+      98
+              99           // Configura a playlist (quando a mesma não está por padrão como autoplay)
+              100          function playListConfig(index) {
+              101                 $("#jplayer_playlist_item_" + playItem).removeClass("jplayer_playlist_current").parent().removeClass("jplayer_playlist_current");
+                      102                 $("#jplayer_playlist_item_" + index).addClass("jplayer_playlist_current").parent().addClass("jplayer_playlist_current");
+                      103                 playItem = index;
+                      104                 $("#jquery_jplayer").jPlayer("setFile", minhaPlayList[playItem].mp3, minhaPlayList[playItem].ogg);
+                      105          }
+      106
+              107          function mudarPlayList(index) {
+              108                 playListConfig(index);
+                      109                 $("#jquery_jplayer").jPlayer("play");
+                      110          }
+      111
+              112          // Executa a próxima faixa
+              113          function playListProximo() {
+              114                 var index = (playItem + 1 < minhaPlayList.length) ? playItem + 1 : 0;
+                      115                 mudarPlayList(index);
+                      116          }
+      117
+              118          // Executa a faixa anterior
+              119          function playListAnterior() {
+              120                 var index = (playItem - 1 >= 0) ? playItem - 1 : minhaPlayList.length - 1;
+                      121                 mudarPlayList(index);
+                      122          }
+      123    });
+              124    -- >
+              125 < /script
+              < /h:head>
+              < h:body >
+              128<!-- Código para forçar a execução da primeira música quando a página abre. -->
+  129    <div id="jquery_jplayer" style="position: absolute; top: 0px; left: -9999px;">
+  130          <audio id="jqjp_audio_0" preload="none" src="songs/human-after-all.mp3"></audio>
+  131
+  132          <div id="jqjp_force_0" style="text-indent: -9999px;">0.3245763930026442</div>
+  133    </div>
+  134
+  135    <div class="jp-playlist-player">
+  136          <div class="jp-interface">
+  137                 <ul class="jp-controls">
+  138                        <li><a href="#" id="jplayer_play" class="jp-play" tabindex="1" title="Executar">play</a></li>
+  139                        <li><a href="#" id="jplayer_pause" class="jp-pause" tabindex="1" style="display: block;" title="Pausar">pause</a></li>
+  140                        <li><a href="#" id="jplayer_stop" class="jp-stop" tabindex="1" title="Parar">stop</a></li>
+  141                        <li><a href="#" id="jplayer_volume_min" class="jp-volume-min" tabindex="1" title="Mínimo">min volume</a></li>
+  142                        <li><a href="#" id="jplayer_volume_max" class="jp-volume-max" tabindex="1" title="Máximo">max volume</a></li>
+  143                        <li><a href="#" id="jplayer_anterior" class="jp-previous" tabindex="1" title="Anterior">previous</a></li>
+  144                        <li><a href="#" id="jplayer_proximo" class="jp-next" tabindex="1" title="Próximo">next</a></li>
+  145                 </ul>
+  146                 <div class="jp-progress">
+  147                        <div id="jplayer_load_bar" class="jp-load-bar" style="width: 0%;">
+  148                               <div id="jplayer_play_bar" class="jp-play-bar" style="width: 0%;"></div>
+  149                        </div>
+  150                 </div>
+  151                 <div id="jplayer_volume_bar" class="jp-volume-bar">
+  152                        <div id="jplayer_volume_bar_value" class="jp-volume-bar-value" style="width: 80%;"></div>
+  153                 </div>
+  154                 <div id="jplayer_tempo_execucao" class="jp-play-time">00:00</div>
+  155                 <div id="jplayer_tempo_total" class="jp-total-time">00:00</div>
+  156          </div>
+  157          <div id="jplayer_playlist" class="jp-playlist">
+  158                 <ul>
+  159                        <li class="jplayer_playlist_current">
+  160                               <a href="#" id="jplayer_playlist_item_0" tabindex="1" class="jplayer_playlist_current">Daft Punk - Human After All</a> 
+  161                        </li>
+  162                        <li>
+  163                               <a href="#" id="jplayer_playlist_item_1" tabindex="1">Amy Winehouse - You Know I'm No Good</a> 
+  164                        </li>
+  165                        <li>
+  166                               <a href="#" id="jplayer_playlist_item_2" tabindex="1">Black Eyed Peas - Shut Up</a> 
+  167                        </li>
+  168                        <li>
+  169                               <a href="#" id="jplayer_playlist_item_3" tabindex="1">Nightwish - Ghost River</a> 
+  170                        </li>
+  171                        <li class="jplayer_playlist_ultimo_item">
+  172                               <a href="#" id="jplayer_playlist_item_5" tabindex="1">Daft Punk - Techonologic</a> 
+  173                        </li>
+  174                 </ul>
+  175          </div>
+  176    </div>
+    </h:body>
+</html>
+

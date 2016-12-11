@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        </h:head>
+
+        <script>
+            $(".togglelink").click(function () {
+                $("#show").fadeToggle();
+                $("#hide").fadeToggle();
+            });
+        </script>
+
+        <style type="text/css">
+            body{
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                overflow: auto;
+                background: url(img/background/bg1.jpg);
+            }
+
+            #show{
+                width: 280px;
+                position: absolute;
+                left: 50%;
+                margin-left: -440px;
+                top: 55%;
+                margin-top: -300px;
+            }
+
+            #show .ui-link{
+                font-size: 12px;
+                color: #5d78ab;
+                text-decoration: none;
+            }
+            #show .ui-link:hover{
+                text-decoration: underline;
+            }
+
+            #show .ui-corner-all{
+                -webkit-border-radius: 0px; 
+                border-radius: 0px;    
+
+            }
+
+            // #form_pan{
+            //   position: absolute;
+            // left: 50%;
+            //margin-left: -440px;
+            //top: 50%;
+            //margin-top: -300px;
+
+            //}
+
+            #show #loginFormup .ui-corner-all{
+
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+
+            }
+
+            #loginFormup{
+                margin: 0 auto 0 auto;
+                width: auto;
+                text-align: center;
+                position: relative;
+                display: block;
+                padding: 0px 0;
+
+
+            }
+
+            #loginForm{
+
+
+            }
+
+            #loginFormdown{
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background: #eeedea;
+                padding: 0px 0 0px 0;
+                margin: 0px 0 0 0;
+
+            }
+
+
+            #loginFormdown .ui-corner-all{
+
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+
+            #show .ui-button{
+                margin-left: 10px;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+                width: 220px;
+                height: 43px;
+                border-radius: 4px;
+                border: 1px solid #7ea613;
+                background-color: #9eca3b;
+                background: -webkit-linear-gradient(top,#acd341 0,#88bd32 100%);
+                text-shadow: 0 -1px 0 #72942a;
+            }
+            #show .ui-button:hover{
+                color: white;
+                background-color: #b2db42;
+                background: -webkit-linear-gradient(top,#b2db42 0,#88bd32 100%);
+                border: 1px solid #7ea613;
+            }
+
+            #show .ui-inputfield{
+                width: 220px;
+                height: 31px;
+                //border-radius: 4px;
+                background: #fff;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 5px;
+                float: left;
+                margin: 0 0 12px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -o-box-sizing: border-box;
+                box-sizing: border-box;
+                color: #000;
+            }
+
+            ::-webkit-scrollbar {
+                width: 9px !important;
+                background: #1c1c1f !important; 
+            }
+
+            ::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px #1c1c1f !important; 
+                -webkit-border-radius: 40px !important;
+                border-radius: 40px !important;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 40px !important;
+                border-radius: 40px !important;
+                background: #323438 !important; 
+                -webkit-box-shadow: inset 0 0 6px #1c1c1f !important; 
+            }
+            ::-webkit-scrollbar-thumb:window-inactive {
+                background: #323438 !important; 
+            }
+
+
+        </style>
+
+        <h:body>
+            <h:panelGroup id="show">
+                <h:form id="loginFormup">
+                    <p:panel>
+                        <h:panelGrid style="background-image: url('img/logo/logo_M.png');
+                                     background-repeat: no-repeat; margin-left: 50px;" 
+                                     columns="1" cellpadding="75">
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+
+                <h:form id="loginForm">
+                    <p:growl id="msg" showDetail="true" life="3000" /> 
+
+                    <p:panel id="panel" >
+
+                        <p:messages id="msgs" />
+                        <br></br>
+                        <p:commandButton  id="bt-facebook" value="Entrar com Facebook" update="loginForm" ajax="true" ></p:commandButton>
+                        <br></br>
+                        <br></br>
+                        <hr></hr>
+                        <br></br>
+                        <h:panelGrid  id="loginPanel" columns="2" cellpadding="7" >
+                            <p:inputText id="email"  required="true" label="email"  value="#{loginBean.usuario.email}"
+                                         requiredMessage="Insira seu login.">
+                                <p:watermark for="email" value="Nome do usuário MMC"></p:watermark>
+                            </p:inputText>
+
+                            <br></br>
+
+                            <p:password id="password"   required="true" label ="senha" value="#{loginBean.usuario.senha}" 
+                                        requiredMessage="Insira sua senha.">
+                                <p:watermark for="password" value="Senha"></p:watermark>
+                            </p:password>
+
+
+                        </h:panelGrid>
+                        <br></br>
+                        <p:commandButton  id="bt-log" action="#{loginBean.verificaDados}" value="Login" 
+                                          update="loginForm" ajax="true" ></p:commandButton>
+
+
+                        <br></br>
+                        <br></br>
+
+                    </p:panel>
+                </h:form>
+
+                <h:form id="loginFormdown">
+                    <p:panel>
+                        <h:panelGrid>
+                            <h:form>
+                                <h7 style="  font-family: 'proxima_nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+                                    font-size: 12px;
+                                    margin-left: 10px;
+                                    text-decoration: none;
+                                    line-height: 19px;
+                                    color: #88898c;">Não tem uma conta?</h7>
+                                <p:link outcome="facebookCad"  value="Inscreva-se aqui!">
+                                </p:link>
+                            </h:form>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </h:panelGroup>
+
+
+
+
+
+
+        </h:body>
+    </f:view>
+</html>
+

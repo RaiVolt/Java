@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+        <style type="text/css">
+            body{
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                overflow: auto;
+                background: url(img/background/bg1.jpg);
+            }
+
+            ::-webkit-scrollbar {
+                width: 9px !important;
+                background: #1c1c1f !important; 
+            }
+
+            ::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px #1c1c1f !important; 
+                -webkit-border-radius: 40px !important;
+                border-radius: 40px !important;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 40px !important;
+                border-radius: 40px !important;
+                background: #323438 !important; 
+                -webkit-box-shadow: inset 0 0 6px #1c1c1f !important; 
+            }
+            ::-webkit-scrollbar-thumb:window-inactive {
+                background: #323438 !important; 
+            }
+
+            .ui-corner-all{
+                -webkit-border-radius: 0px; 
+                border-radius: 0px;    
+
+            }
+
+            #form_pan .ui-link{
+                font-size: 12px;
+                color: #5d78ab;
+                text-decoration: none;
+
+            }
+
+            #form_pan .ui-link:hover{
+                text-decoration: underline;
+            }
+
+            #form_pan{
+                width: 280px;
+                position: absolute;
+                left: 50%;
+                margin-left: -440px;
+                top: 50%;
+                margin-top: -300px;
+
+            }
+
+            #loginFormup .ui-corner-all{
+
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+
+            }
+
+            #loginFormup{
+                margin: 0 auto 0 auto;
+                width: auto;
+                text-align: center;
+                position: relative;
+                display: block;
+                padding: 0px 0;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+
+
+            }
+
+
+
+            #loginForm{
+
+
+            }
+
+
+            #loginFormdown{
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background: #eeedea;
+                padding: 0px 0 0px 0;
+                margin: 0px 0 0 0;
+
+                //  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+                //   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3); 
+                //   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3); 
+            }
+
+
+            #loginFormdown .ui-corner-all{
+
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            .ui-button{
+                margin-left: 10px;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+                width: 220px;
+                height: 43px;
+                border-radius: 4px;
+                border: 1px solid #7ea613;
+                background-color: #9eca3b;
+                background: -webkit-linear-gradient(top,#acd341 0,#88bd32 100%);
+                text-shadow: 0 -1px 0 #72942a;
+            }
+            .ui-button:hover{
+                color: white;
+                background-color: #b2db42;
+                background: -webkit-linear-gradient(top,#b2db42 0,#88bd32 100%);
+                border: 1px solid #7ea613;
+            }
+
+            .ui-inputfield{
+                width: 220px;
+                height: 31px;
+                //border-radius: 4px;
+                background: #fff;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 5px;
+                float: left;
+                margin: 0 0 12px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -o-box-sizing: border-box;
+                box-sizing: border-box;
+                color: #000;
+            }
+            #form_pan .ui-outputlabel{
+                display: block;
+                font-size: 11px;
+                text-align: left;
+                padding: 5px 0 5px 0;
+                color: #757574;   
+            }
+        </style>
+        <h:body>
+            <h:panelGroup id="form_pan">
+                <h:form id="loginFormup">
+                    <p:panel>
+                        <h:panelGrid columns="1" cellpadding="15">
+                            <h8 style="color: #343434; font-size: 15px;
+                                text-shadow: none; line-height: 32px;
+                                margin-left: 20px;  font-weight: 100;
+                                cursor: default; 
+                                ">Crie sua conta do MMC</h8>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+
+                <h:form id="loginForm">
+                    <p:growl id="msg" sticky="true" /> 
+
+                    <p:panel id="panel" >
+
+                        <p:messages id="msgs" />
+
+                        <h:panelGrid  id="loginPanel"  cellpadding="2" >
+                            <p:outputLabel for="nome" value="Nome de Usuário:" />
+                            <p:inputText id="nome" required="true" label="nome" value="#{usuarioBean.usuario.nome}" 
+                                         requiredMessage="Insira seu nome."
+                                         validatorMessage="Formato de nome invalido!!">
+                                <f:validateLength minimum="1" maximum="20"/>
+                                <p:watermark for="nome" value="Nome do usuário MMC"></p:watermark>
+                            </p:inputText>
+
+                            <p:outputLabel for="email1" value="E-mail:" />
+                            <p:inputText id="email1" required="true" label="E-mail:"  value="#{usuarioBean.usuario.email}"
+                                         requiredMessage="Insira seu e-mail."
+                                         validatorMessage="Formato de email invalido!!">
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                <p:watermark for="email1" value="exemplo usuario@email.com.br"></p:watermark>
+                            </p:inputText>
+
+
+                            <p:outputLabel for="password" value="Senha:" />
+                            <p:password id="password"   required="true" label ="senha"  value="#{usuarioBean.usuario.senha}"
+                                        feedback="true" inline="true" match="password2"
+                                        promptLabel="Por favor insira sua senha" weakLabel="Fraco"
+                                        goodLabel="Médio" strongLabel="Forte"
+                                        requiredMessage="Insira sua senha.">
+                                <p:watermark for="password" value="Senha"></p:watermark>
+                            </p:password>
+
+                            <p:outputLabel for="password2" value="Senha:" />
+                            <p:password id="password2"   required="true" label ="senha" 
+                                        feedback="true" inline="true"
+                                        promptLabel="Por favor insira sua senha Novamente" weakLabel="Fraco"
+                                        goodLabel="Médio" strongLabel="Forte"
+                                        requiredMessage="Insira sua senha.">
+                                <p:watermark for="password2" value="Insira a senha novamente"></p:watermark>
+                            </p:password>
+
+                            <p:outputLabel for="tipo" value="Tipo:" />
+                            <p:selectOneMenu id="tipo" filter="true" value="#{usuarioBean.usuario.tipo}" style="width:160px; height: 33px;"
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem noSelectionOption="true" itemLabel="Selecione um Tipo" />
+                                <f:selectItems value="#{tipoBean.tipos}" var="tipo"
+                                               itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+                            </p:selectOneMenu>
+
+
+                            <p:outputLabel for="sexo" value="Sexo:" />
+                            <p:selectOneMenu id="sexo" value="#{usuarioBean.usuario.sexo}" style="width:50px; height: 33px;"
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem noSelectionOption="true" itemLabel="---" />
+                                <f:selectItem itemLabel="M" itemValue="M" />
+                                <f:selectItem itemLabel="F" itemValue="F" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="idade" value="Idade:" />
+                            <p:inputText id="idade" required="true" label="idade"  value="#{usuarioBean.usuario.idade}" 
+                                         style="width:45px;"
+                                         requiredMessage="Insira sua Idade."
+                                         validatorMessage="Formato de nome invalido!!">
+                                <f:validateLength minimum="1" maximum="3"/>
+                                <p:watermark for="idade" value="Ex: 15"></p:watermark>
+                            </p:inputText>
+
+                            <p:outputLabel for="estado" value="Estado:"/>
+                            <p:selectOneMenu id="estado"  filter="true" style="width:160px; height: 33px;"
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem noSelectionOption="true" itemLabel="Selecione um Estado" />
+                                <f:selectItems value="#{usuarioBean.estados}" var="estado"
+                                               itemValue="#{estado}" itemLabel="#{estado.nome} - #{estado.sigla}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="cidade" value="Cidade:"/>
+                            <p:selectOneMenu id="cidade"  filter="true"  style="width:160px; height: 33px;"
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem noSelectionOption="true" itemLabel="Selecione uma Cidade" />
+                                <f:selectItems value="#{usuarioBean.cidades}" var="cidade"
+                                               itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+                            </p:selectOneMenu>
+
+
+                        </h:panelGrid>
+                        <br></br>
+
+
+
+                    </p:panel>
+                </h:form>
+
+                <h:form id="loginFormdown">
+                    <p:growl id="msgs" sticky="true" /> 
+                    <p:panel>
+                        <br></br>
+                        <p:commandButton  id="ajax" value="Inscreva-se" actionListener="#{usuarioBean.salvar}"  
+                                          update="msgs"   ajax="true" 
+                                          style="margin-left: 17px">
+                            <f:ajax render="@form"/>
+                        </p:commandButton>
+
+                        <br></br>
+                        <br></br>
+
+                        <h:panelGrid>
+                            <p:link outcome="facebookCad" value=" Voltar" style="margin-left: 109px">
+                            </p:link>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </h:panelGroup>
+
+        </h:body>
+    </f:view>
+</html>
+

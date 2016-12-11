@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition
+        xmlns:fb="http://www.facebook.com/2008/fbml">
+
+
+
+        <f:view contentType="text/html">
+            <h:head>
+                <f:facet name="first">
+                    <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                    <script src='https://www.google.com/recaptcha/api.js'></script>
+                    <title>PrimeFaces</title>
+                </f:facet>
+            </h:head>
+            <style type="text/css">
+                body{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    bottom: 0;
+                    overflow: auto;
+                    background: url(img/background/bg1.jpg);
+                }
+
+
+                .ui-corner-all{
+                    -webkit-border-radius: 0px; 
+                    border-radius: 0px;    
+
+                }
+
+
+
+                #form_pan{
+                    width: 280px;
+                    position: absolute;
+                    left: 50%;
+                    margin-left: -440px;
+                    top: 55%;
+                    margin-top: -300px;
+
+                }
+
+                #loginFormup .ui-corner-all{
+
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+
+                }
+
+                #loginFormup{
+                    margin: 0 auto 0 auto;
+                    width: auto;
+                    text-align: center;
+                    position: relative;
+                    display: block;
+                    padding: 0px 0;
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+
+
+                }
+
+
+
+                #loginForm{
+
+
+                }
+                #logface{
+                    margin-left: 10px;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                    width: 220px;
+                    height: 43px;
+                    border-radius: 4px;
+                    border: 1px solid #7ea613;
+                    background-color: #9eca3b;
+                    background: -webkit-linear-gradient(top,#acd341 0,#88bd32 100%);
+                    text-shadow: 0 -1px 0 #72942a;
+
+                }
+
+                #loginFormdown{
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    background: #eeedea;
+                    padding: 0px 0 0px 0;
+                    margin: 0px 0 0 0;
+
+                    //  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+                    //   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3); 
+                    //   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3); 
+                }
+
+
+                #loginFormdown .ui-corner-all{
+
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                }
+
+                #btCad .ui-button{
+                    margin-left: 10px;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                    width: 220px;
+                    height: 48px;
+                    border-radius: 4px;
+                    border: 1px solid #7ea613;
+                    background-color: #9eca3b;
+                    background: -webkit-linear-gradient(top,#acd341 0,#88bd32 100%);
+                    text-shadow: 0 -1px 0 #72942a;
+                }
+                .ui-button:hover{
+                    color: white;
+                    background-color: #b2db42;
+                    background: -webkit-linear-gradient(top,#b2db42 0,#88bd32 100%);
+                    border: 1px solid #7ea613;
+                }
+
+                .ui-inputfield{
+                    width: 220px;
+                    height: 31px;
+                    background: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    padding: 5px;
+                    float: left;
+                    margin: 0 0 12px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    -o-box-sizing: border-box;
+                    box-sizing: border-box;
+                    color: #000;
+                    
+                }
+
+                #form_pan .ui-link{
+                    font-size: 12px;
+                    color: #5d78ab;
+                    text-decoration: none;
+                }
+                #form_pan .ui-link:hover{
+                    text-decoration: underline;
+                }
+
+
+                ::-webkit-scrollbar {
+                    width: 9px !important;
+                    background: #1c1c1f !important; 
+                }
+
+                ::-webkit-scrollbar-track {
+                    -webkit-box-shadow: inset 0 0 6px #1c1c1f !important; 
+                    -webkit-border-radius: 40px !important;
+                    border-radius: 40px !important;
+                }
+
+                /* Handle */
+                ::-webkit-scrollbar-thumb {
+                    -webkit-border-radius: 40px !important;
+                    border-radius: 40px !important;
+                    background: #323438 !important; 
+                    -webkit-box-shadow: inset 0 0 6px #1c1c1f !important; 
+                }
+                ::-webkit-scrollbar-thumb:window-inactive {
+                    background: #323438 !important; 
+                }
+            </style>
+
+
+            <body>
+                <h:panelGroup id="form_pan">
+                    <p:growl id="mensagem" />
+
+
+                    <h:form id="loginFormup">
+                        <p:panel>
+                            <h:panelGrid style="background-image: url('img/logo/logo_M.png'); 
+                                         background-repeat: no-repeat; margin-left: 50px;"  
+                                         columns="1" cellpadding="75">
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+
+                    <h:form id="loginForm">
+
+                        <p:panel id="panel" >
+
+
+                            <h:panelGrid  id="loginPanel"  cellpadding="8" >
+
+
+
+                           
+
+
+                                <div id="status" style="font-size: 10px; margin-left: 50px;">
+                                </div>
+
+                                <br></br>
+                                <hr></hr>
+                                <h3 style="margin-left:100px ">Ou</h3>
+                                <hr></hr>
+                                <br></br>
+                                <p:commandButton  id="btCad" value="Inscreva-se com seu endereço de e-mail"
+                                                  actionListener="#{usuarioBean.novo}"
+                                                  oncomplete="PF('dialogo').show();"
+                                                  update=":mensagem :formCadastro:painel" 
+                                                  ajax="true" style="margin-left: 5px" >
+                                    <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                                </p:commandButton>
+
+                            </h:panelGrid>
+
+
+                            <br></br>
+                            <br></br>
+
+                        </p:panel>
+
+                    </h:form>
+
+                    <h:form id="loginFormdown">
+                        <p:panel>
+                            <h:panelGrid>
+                                <p:link outcome="login" value="Já tem conta? Entre aqui."  style="margin-left: 50px">
+                                </p:link>
+                                <br></br>
+                            </h:panelGrid>
+
+                        </p:panel>
+                    </h:form>
+
+                    <p:dialog header="Cadastro do Usuário MMC" widgetVar="dialogo"
+                              draggable="false" resizable="false" modal="true" closable="false">
+                        <h:form id="formCadastro">
+                            <h:panelGrid id="painel" columns="2">
+
+
+                                <p:outputLabel for="nome" value="Nome de Usuário:" />
+                                <p:inputText id="nome" required="true" label="nome" value="#{usuarioBean.usuario.nome}" 
+                                             requiredMessage="Insira seu nome."
+                                             validatorMessage="Combinação/Palavra inaceitavel!!">
+                                    <f:validateRegex pattern="(^(?!.*123)(?!.*abc)(?!.*idiota)(?!.*feioso)(?!.*bundao)(?!.*otario).*$)"/>
+                                    <f:validateLength minimum="1" maximum="20"/>
+                                    <p:watermark for="nome" value="Nome do usuário MMC"></p:watermark>
+                                </p:inputText>
+
+                                <p:outputLabel for="email1" value="E-mail:" />
+                                <p:inputText id="email1" required="true" label="E-mail:"  value="#{usuarioBean.usuario.email}"
+                                             requiredMessage="Insira seu e-mail."
+                                             validatorMessage="Formato de email invalido!!">
+                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                    <p:watermark for="email1" value="exemplo usuario@email.com.br"></p:watermark>
+                                </p:inputText>
+
+
+
+                                <p:outputLabel for="password" value="Senha:" />
+                                <p:password id="password"   required="true" label ="senha"  value="#{usuarioBean.usuario.senha}"
+                                            feedback="true" inline="true" match="password2"
+                                            promptLabel="Por favor insira sua senha" weakLabel="Fraco"
+                                            goodLabel="Médio" strongLabel="Forte"
+                                            requiredMessage="Insira sua senha."
+                                            validatorMessage="A sua senha deve conter 1 letra maiúscula, 1 número, 1 caractere especial e possuir de 6 a 20 caracteres.
+                                            .">
+                                    <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"/>
+                                    <p:watermark for="password" value="Senha: Ex 22Rafa@@"></p:watermark>
+                                </p:password>
+
+
+
+
+                                <p:outputLabel for="password2" value="Senha:" />
+                                <p:password id="password2"  label ="senha" required="true"
+                                            feedback="true" inline="true"
+                                            promptLabel="Por favor insira sua senha Novamente" weakLabel="Fraco"
+                                            goodLabel="Médio" strongLabel="Forte"
+                                            requiredMessage="Insira sua senha.">
+                                    <p:watermark for="password2" value="Insira a senha novamente"></p:watermark>
+                                </p:password>
+
+                                <p:outputLabel for="tipo" value="Tipo:" />
+                                <p:selectOneMenu id="tipo" filter="true" value="#{usuarioBean.usuario.tipo}" style="width:160px; height: 33px;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Tipo" />
+                                    <f:selectItems value="#{tipoBean.tipos}" var="tipo"
+                                                   itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+                                </p:selectOneMenu>
+
+
+                                <p:outputLabel for="sexo" value="Sexo:" />
+                                <p:selectOneMenu id="sexo" value="#{usuarioBean.usuario.sexo}" required="true" 
+                                                 requiredMessage="Selecione o seu Sexo" style="width:50px; height: 33px;"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="---" />
+                                    <f:selectItem itemLabel="M" itemValue="M" />
+                                    <f:selectItem itemLabel="F" itemValue="F" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="dataNac" value="Data de Nascimento:" />
+                                <p:inputMask id="dataNac" required="true" label="dataNac"  value="#{usuarioBean.usuario.dataNac}" 
+                                             requiredMessage="Insira sua Data de Nascimento."
+                                             validatorMessage="Formato invalido!!" mask="99/99/9999">
+                                    <f:convertDateTime pattern="d/m/yyyy"/>
+                                </p:inputMask>
+
+                                <p:outputLabel for="estado" value="Estado:"/>
+                                <p:selectOneMenu id="estado"  filter="true" required="true" style="width:175px; height: 33px;"
+                                                 converter="omnifaces.SelectItemsConverter" requiredMessage="Selecione o Estado"
+                                                 value="#{usuarioBean.estado}">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Estado" />
+                                    <f:selectItems value="#{usuarioBean.estados}" var="estado"
+                                                   itemValue="#{estado}" itemLabel="#{estado.nome} - #{estado.sigla}" />
+                                    <p:ajax listener="#{usuarioBean.popular}" update=":formCadastro:cidade"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="cidade" value="Cidade:"/>
+                                <p:selectOneMenu id="cidade"  filter="true" required="true"  style="width:175px; height: 33px;"
+                                                 converter="omnifaces.SelectItemsConverter" requiredMessage="Selecione a sua Cidade"
+                                                 value="#{usuarioBean.usuario.cidade}">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione uma Cidade" />
+                                    <f:selectItems value="#{usuarioBean.cidades}" var="cidade"
+                                                   itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1">
+                                <p:captcha label="Captcha"
+                                           id="captchaId"
+                                           language="pt"
+                                           theme="white"
+                                           required="true"
+                                           requiredMessage="Por favor insira o Texto Capcha"
+                                           validatorMessage="Texto Captcha não combina."/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" actionListener="#{usuarioBean.salvar}" 
+                                                 update=":mensagem :formCadastro:painel "  />
+                                <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                            </h:panelGrid>
+
+                        </h:form>
+                    </p:dialog>
+
+
+
+
+
+                </h:panelGroup>
+
+            </body>
+        </f:view>
+    </ui:composition>
+</html>
+

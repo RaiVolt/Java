@@ -1,0 +1,4 @@
+br\com\senac\DAO\EstadoDAOTest.class
+br\com\senac\DAO\CidadeDAOTest.class
+br\com\senac\DAO\UsuarioDAOTest.class
+br\com\senac\DAO\TipoDAOTest.class

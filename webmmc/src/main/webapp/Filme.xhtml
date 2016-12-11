@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+        <h:body rendered="#{loginBean.verificaSessao()}">
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" header="Área Administrativa" resizable="false" closable="false" collapsible="false">
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" header="Desenvolvido por Rafael Machado" resizable="false" closable="false" collapsible="false">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="250"  resizable="false" closable="false" header="Menu" collapsible="true">
+                    <h:form  enctype="multipart/form-data">
+                        <p:growl autoUpdate="true"/>
+
+                        <p:panelMenu>
+                            <p:submenu label="Arquivo">
+                                <p:menuitem value="Principal"  url="principal.xhtml"/>
+                                <p:menuitem  value="Sair" action="#{loginBean.fecharSessao}"/>
+                            </p:submenu>
+                            <p:submenu label="Cadastro">
+                                <p:submenu label="Músicas">
+                                    <p:menuitem value="Album" url="Album.xhtml" />
+                                    <p:menuitem value="Artista" url="Artista.xhtml" />
+                                    <p:menuitem value="Musica"  url="Musica.xhtml"/>
+                                    <p:menuitem value="Genero Música"  url="GenMusica.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Filmes">
+                                    <p:menuitem value="Ator" url="Ator.xhtml"/>
+                                    <p:menuitem value="Filme"  url="Filme.xhtml"/>
+                                    <p:menuitem value="Genero Filme" url="GenFilme.xhtml"/>
+                                    <p:menuitem value="Diretor" url="Diretor.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Usuários">
+                                    <p:menuitem value="Usuário" url="User.xhtml"/>
+                                    <p:menuitem value="Estado" url="Estado.xhtml"/>
+                                    <p:menuitem value="Cidade" url="Cidade.xhtml"/>
+                                    <p:menuitem value="Tipo" url="Tipo.xhtml"/>
+                                    <p:menuitem value="Playlist" url="Playlist.xhtml"/>    
+                                </p:submenu>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="false" closable="false" collapsible="false">
+                    <p:growl id="mensagem" />
+
+                    <h:form id="formListagem"  enctype="multipart/form-data">
+                        <p:panel header="Filme - Listagem">
+                            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                                         paginator="true" value="#{filmeBean.filmes}" var="filme" rows="5">
+                                <f:facet name="header">
+                                    <p:commandButton value="Novo" actionListener="#{filmeBean.novo}"
+                                                     oncomplete="PF('dialogo').show();"
+                                                     update=":mensagem :formCadastro:painel" />
+                                </f:facet>
+
+                                <p:column headerText="ID" sortBy="#{filme.id}"
+                                          filterBy="#{filme.id}">
+                                    <h:outputText value="#{filme.id}" />
+                                </p:column>
+
+
+                                <p:column headerText="Filme" sortBy="#{filme.tituloFilme}"
+                                          filterBy="#{filme.tituloFilme}">
+                                    <h:outputText value="#{filme.tituloFilme}" />
+                                </p:column>
+
+
+                                <p:column headerText="Duração" sortBy="#{filme.duracao}"
+                                          filterBy="#{filme.duracao}">
+                                    <h:outputText value="#{filme.duracao}" />
+                                    <h:outputText value="min" />                                    
+                                </p:column>
+
+
+                                <p:column headerText="Data Cad." sortBy="#{filme.dataCad}"
+                                          filterBy="#{filme.dataCad}">
+                                    <h:outputText value="#{filme.dataCad}" />
+                                </p:column>
+
+                                <p:column headerText="Ator" filterBy="#{filme.ator.nome}"
+                                          sortBy="#{filme.ator.nome}">
+                                    <h:outputText value="#{filme.ator.nome}" />
+                                </p:column>
+
+                                <p:column headerText="Diretor" filterBy="#{filme.diretor.nome}"
+                                          sortBy="#{filme.diretor.nome}">
+                                    <h:outputText value="#{filme.diretor.nome}" />
+                                </p:column>
+
+                                <p:column headerText="Gênero" filterBy="#{filme.generoFilme.descricao}"
+                                          sortBy="#{filme.generoFilme.descricao}">
+                                    <h:outputText value="#{filme.generoFilme.descricao}" />
+                                </p:column>
+
+                                <p:column headerText="Foto"  filterBy="#{filme.foto}"
+                                          sortBy="#{filme.foto}">
+                                    <h:graphicImage value="./image/#{filme.foto}"/>
+                                </p:column>
+
+                                <p:column headerText="Opções">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     actionListener="#{filmeBean.excluir}"
+                                                     update=":mensagem :formListagem:tabela">
+                                        <p:confirm header="Confirmação" message="Deseja excluir a cidade"
+                                                   icon="ui-icon-alert" />
+                                        <f:attribute name="filmeSelecionado" value="#{filme}" />
+                                    </p:commandButton>
+
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     actionListener="#{filmeBean.editar}"
+                                                     update=":mensagem :formCadastro:painel"
+                                                     oncomplete="PF('dialogo').show();">
+                                        <f:attribute name="filmeSelecionado" value="#{filme}" />
+                                    </p:commandButton>
+                                </p:column>
+
+
+                            </p:dataTable>
+
+                            <p:confirmDialog global="true">
+                                <p:commandButton value="Sim" type="button"
+                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button"
+                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:panel>
+                    </h:form>
+
+                    <p:dialog header="Filme - Cadastro" widgetVar="dialogo"
+                              draggable="false" resizable="false" modal="false" closable="false">
+                        <h:form id="formCadastro"  enctype="multipart/form-data">
+                            <h:panelGrid id="painel" columns="2">
+                                <p:outputLabel value="Filme:" />
+                                <p:inputText maxlength="50" size="30"
+                                             value="#{filmeBean.filme.tituloFilme}" />
+
+
+                                <p:outputLabel value="Duração:" />
+                                <p:inputText maxlength="50" size="30"
+                                             value="#{filmeBean.filme.duracao}" />
+
+
+                                <p:outputLabel value="Ator:" />
+                                <p:selectOneMenu filter="true" value="#{filmeBean.filme.ator}"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Ator" />
+                                    <f:selectItems value="#{filmeBean.atores}" var="ator"
+                                                   itemValue="#{ator}" itemLabel="#{ator.nome}" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Diretor:" />
+                                <p:selectOneMenu filter="true" value="#{filmeBean.filme.diretor}"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Diretor" />
+                                    <f:selectItems value="#{filmeBean.diretores}" var="diretor"
+                                                   itemValue="#{diretor}" itemLabel="#{diretor.nome}" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Gênero:" />
+                                <p:selectOneMenu filter="true" value="#{filmeBean.filme.generoFilme}"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um Gênero" />
+                                    <f:selectItems value="#{filmeBean.generoFilmes}" var="generoFilme"
+                                                   itemValue="#{generoFilme}" itemLabel="#{generoFilme.descricao}" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Foto:"/> 
+                                <p:fileUpload id="upload"  update=":formListagem:tabela" mode="advanced" dragDropSupport="false"
+                                              fileLimit="1" allowTypes="/(.|\/)(gif|jpe?g|png)$/"
+                                              fileUploadListener="#{filmeBean.uploadAction}" auto="true"/> 
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" actionListener="#{filmeBean.salvar}"
+                                                 update=":mensagem :formCadastro:painel :formListagem:tabela" process="@this">
+                                    <f:ajax execute="@all" render="@form"/>
+                                </p:commandButton>
+                                <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                            </h:panelGrid>
+                        </h:form>
+                    </p:dialog>
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

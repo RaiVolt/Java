@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+        <h:body rendered="#{loginBean.verificaSessao()}">
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" header="Área Administrativa" resizable="false" closable="false" collapsible="false">
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" header="Desenvolvido por Rafael Machado" resizable="false" closable="false" collapsible="false">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="250"  resizable="false" closable="false" header="Menu" collapsible="true">
+                    <h:form>
+                        <p:growl autoUpdate="true"/>
+
+                        <p:panelMenu>
+                            <p:submenu label="Arquivo">
+                                <p:menuitem value="Principal"  url="principal.xhtml"/>
+                                <p:menuitem  value="Sair" action="#{loginBean.fecharSessao}"/>
+                            </p:submenu>
+                            <p:submenu label="Cadastro">
+                               <p:submenu label="Músicas">
+                                    <p:menuitem value="Album" url="Album.xhtml" />
+                                    <p:menuitem value="Artista" url="Artista.xhtml" />
+                                    <p:menuitem value="Musica"  url="Musica.xhtml"/>
+                                    <p:menuitem value="Genero Música"  url="GenMusica.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Filmes">
+                                    <p:menuitem value="Ator" url="Ator.xhtml"/>
+                                    <p:menuitem value="Filme"  url="Filme.xhtml"/>
+                                    <p:menuitem value="Genero Filme" url="GenFilme.xhtml"/>
+                                    <p:menuitem value="Diretor" url="Diretor.xhtml"/>    
+                                </p:submenu>
+
+                                <p:submenu label="Usuários">
+                                    <p:menuitem value="Usuário" url="User.xhtml"/>
+                                    <p:menuitem value="Estado" url="Estado.xhtml"/>
+                                    <p:menuitem value="Cidade" url="Cidade.xhtml"/>
+                                    <p:menuitem value="Tipo" url="Tipo.xhtml"/>
+                                    <p:menuitem value="Playlist" url="Playlist.xhtml"/>    
+                                </p:submenu>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:layoutUnit>
+
+               <p:layoutUnit position="center" resizable="false" closable="false" collapsible="false">
+                    <p:growl id="mensagem" />
+
+                    <h:form id="formListagem">
+                        <p:panel header="Ator - Listagem">
+                            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                                         paginator="true" value="#{atorBean.atores}" var="ator" rows="5">
+                                <f:facet name="header">
+                                    <p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+                                                     actionListener="#{atorBean.novo}" update=":formCadastro:painel" />
+                                </f:facet>
+
+                                <p:column headerText="ID" sortBy="#{ator.id}"
+                                          filterBy="#{ator.id}">
+                                    <h:outputText value="#{ator.id}" />
+                                </p:column>
+
+                                <p:column headerText="Descrições" sortBy="#{ator.nome}"
+                                          filterBy="#{ator.nome}">
+                                    <h:outputText value="#{ator.nome}" />
+                                </p:column>
+
+                                <p:column headerText="Opções">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     actionListener="#{atorBean.excluir}"
+                                                     update=":mensagem :formListagem:tabela">
+                                        <p:confirm header="Confirmação" message="Deseja excluir o ator?"
+                                                   icon="ui-icon-alert" />
+                                        <f:attribute name="atorSelecionado" value="#{ator}" />
+                                    </p:commandButton>
+
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     actionListener="#{atorBean.editar}"
+                                                     update=":formCadastro:painel"
+                                                     oncomplete="PF('dialogo').show();">
+                                        <f:attribute name="atorSelecionado" value="#{ator}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:confirmDialog global="true">
+                                <p:commandButton value="Sim" type="button"
+                                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button"
+                                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:panel>
+                    </h:form>
+
+                    <p:dialog header="Ator - Cadastro" widgetVar="dialogo"
+                              draggable="false" resizable="false" modal="false" closable="false">
+                        <h:form id="formCadastro">
+                            <h:panelGrid id="painel" columns="2">
+                                <p:outputLabel value="Nome:" />
+                                <p:inputText maxlength="50" size="30"
+                                             value="#{atorBean.ator.nome}" />
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar"
+                                                 actionListener="#{atorBean.salvar}"
+                                                 update=":mensagem :formCadastro:painel :formListagem:tabela" />
+                                <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                            </h:panelGrid>
+                        </h:form>
+                    </p:dialog>
+                </p:layoutUnit>
+                
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
