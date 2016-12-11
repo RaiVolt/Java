@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             template="template.xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:layout>
+        <p:layoutUnit position="center">
+            <h:form id="formListagem">
+                <p:messages autoUpdate="true" showDetail="true"></p:messages> 
+
+                <!--Center -->
+                <p:fieldset legend="Usuários Cadastrados">
+                    <h:graphicImage  style="margin-left: 1100px" library="imagens" name="fun1.png" width="90px" ></h:graphicImage>
+                    <p:dataTable id="tbl" value="#{loginBean.logins}" var="user" paginator="true" rows="6" >
+                        <p:column style="width: 110px" headerText="Editar-Deletar" exportable="false" >
+                            
+                                <p:commandButton icon="ui-icon-trash"
+                                                 actionListener="#{loginBean.excluir}"
+                                                 update="@all">
+                                    <p:confirm header="Confirmação" message="Deseja excluir o usuário?"
+                                               icon="ui-icon-alert" />
+                                    <f:attribute name="usuarioSelecionado" value="#{user}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 actionListener="#{loginBean.editar}"
+                                                 update=":formEditar:painel2"
+                                                 oncomplete="PF('dialogo').show();">
+                                    <f:attribute name="usuarioSelecionado" value="#{user}" />
+                                </p:commandButton>
+                           
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
+                        
+                        <p:column headerText="Cód." style="width: 65px;" sortBy="#{user.id}">
+                            <h:outputText value='#{user.id}'></h:outputText>
+                        </p:column> 
+                        <p:column headerText="Funcionário" sortBy="#{user.username}">
+                            <h:outputText value="#{user.username}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Função" sortBy="#{user.password}">
+                            <h:outputText value="#{user.password}"></h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <h:commandLink>
+                        <p:graphicImage library="imagens" name="pdf.png" />
+                        <p:dataExporter type="pdf" target="tbl" encoding="ISO-8859-1" fileName="funcionarios" pageOnly="true" />
+                    </h:commandLink>
+                </p:fieldset>
+
+            </h:form>
+        </p:layoutUnit>
+        <!--West -->
+        <p:layoutUnit position="west" resizable="false" size="400">
+            <h:form id="formCadastro">
+
+                <p:fieldset legend="Cadastro de Usuário">  
+                    <h:graphicImage  library="imagens" name="fun2.png" width="70px" ></h:graphicImage>
+                    <br /><br /> <!-- <br> -->
+                    <p:panelGrid columns="2" id="painel">
+
+                        <h:outputLabel value="Username:"></h:outputLabel>
+                        <p:inputText type="text" value="#{loginBean.login.username}" placeholder="Nome" 
+                                     required="true" requiredMessage="Preencha o seu nome de usuário"/>
+
+                        <h:outputLabel value="Senha:"></h:outputLabel>
+                        <p:inputText type="password" value="#{loginBean.login.password}"  placeholder="Senha" 
+                                     required="true" requiredMessage="Preencha o sua senha"/>
+
+                    </p:panelGrid>
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Cadastrar" update=":formCadastro:painel :formListagem:tbl"
+                                     actionListener="#{loginBean.salvar}" icon="ui-icon-plusthick"/>
+                </p:fieldset>
+            </h:form>
+
+            <p:dialog header="Usuario - Editar" widgetVar="dialogo"
+                      draggable="false" resizable="false" modal="false" closable="false">
+                <h:form id="formEditar">
+                    <h:panelGrid id="painel2" columns="2">
+
+                        <h:outputLabel value="Username:"></h:outputLabel>
+                        <p:inputText type="text" value="#{loginBean.login.username}" placeholder="Nome" 
+                                     required="true" requiredMessage="Preencha o seu nome de usuário"/>
+
+                        <h:outputLabel value="Senha:"></h:outputLabel>
+                        <p:inputText type="password" value="#{loginBean.login.password}"  placeholder="Senha" 
+                                     required="true" requiredMessage="Preencha o sua senha"/>
+
+
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Cadastrar" update=":formCadastro:painel :formListagem:tbl" 
+                                         actionListener="#{loginBean.salvar}" icon="ui-icon-plusthick"/>
+
+                        <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:layoutUnit>
+
+
+    </p:layout>
+</ui:decorate>
+

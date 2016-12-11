@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             template="template.xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:layout>
+        <p:layoutUnit position="center">
+            <h:form id="formListagem">
+                <p:messages autoUpdate="true" showDetail="true"></p:messages> 
+
+                <!--Center -->
+                <p:fieldset legend="Funcionários Cadastrados">
+                    <h:graphicImage  style="margin-left: 1100px" library="imagens" name="fun1.png" width="90px" ></h:graphicImage>
+                    <p:dataTable id="tbl" value="#{funcionarioBean.funcionarios}" var="funcionario" paginator="true" rows="6" >
+                        <p:column style="width: 110px" headerText="Editar-Deletar" exportable="false" >
+
+                            <p:commandButton icon="ui-icon-trash"
+                                             actionListener="#{funcionarioBean.excluir}"
+                                             update="@all">
+                                <p:confirm header="Confirmação" message="Deseja excluir o funcionario?"
+                                           icon="ui-icon-alert" />
+                                <f:attribute name="funcionarioSelecionado" value="#{funcionario}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-pencil"
+                                             actionListener="#{funcionarioBean.editar}"
+                                             update=":formEditar:painel2"
+                                             oncomplete="PF('dialogo').show();">
+                                <f:attribute name="funcionarioSelecionado" value="#{funcionario}" />
+                            </p:commandButton>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
+
+
+                        <p:column headerText="Cód." style="width: 65px;" sortBy="#{funcionario.id}">
+                            <h:outputText value='#{funcionario.id}'></h:outputText>
+                        </p:column> 
+                        <p:column headerText="Funcionário" sortBy="#{funcionario.nome}">
+                            <h:outputText value="#{funcionario.nome}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Função" sortBy="#{funcionario.funcao}">
+                            <h:outputText value="#{funcionario.funcao}"></h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <h:commandLink>
+                        <p:graphicImage library="imagens" name="pdf.png" />
+                        <p:dataExporter type="pdf" target="tbl" encoding="ISO-8859-1" fileName="funcionarios" pageOnly="true" />
+                    </h:commandLink>
+                </p:fieldset>
+
+            </h:form>
+        </p:layoutUnit>
+        <!--West -->
+        <p:layoutUnit position="west" resizable="false" size="400">
+            <h:form id="formCadastro">
+
+                <p:fieldset legend="Cadastro de Funcionários">  
+                    <h:graphicImage  library="imagens" name="fun2.png" width="70px" ></h:graphicImage>
+                    <br /><br /> <!-- <br> -->
+                    <p:panelGrid columns="2" id="painel">
+                        <h:outputLabel value="Nome:"></h:outputLabel>
+                        <h:inputText label='Funcionario' value='#{funcionarioBean.funcionario.nome}' 
+                                     required="true" requiredMessage="Preencha o nome"></h:inputText>  
+                        <h:outputLabel value="Função:"></h:outputLabel>
+                        <p:selectOneMenu value="#{funcionarioBean.funcionario.funcao}" style="width: 210px" 
+                                         required="true" requiredMessage="Selecione uma função">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecionar Função" itemValue=""></f:selectItem>
+                            <f:selectItem itemLabel="Desenvolvimento" itemValue="Desenvolvimento"></f:selectItem>
+                            <f:selectItem itemLabel="HelpDesk" itemValue="HelpDesk"></f:selectItem>
+                            <f:selectItem itemLabel="Financeiro" itemValue="Financeiro"></f:selectItem>
+                        </p:selectOneMenu>      
+                    </p:panelGrid>
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Cadastrar" update=":formCadastro:painel :formListagem:tbl" 
+                                     actionListener="#{funcionarioBean.salvar}" icon="ui-icon-plusthick" >
+                    </p:commandButton>               
+                </p:fieldset>
+
+            </h:form>
+
+            <p:dialog header="Funcionario - Editar" widgetVar="dialogo"
+                      draggable="false" resizable="false" modal="false" closable="false">
+                <h:form id="formEditar">
+                    <h:panelGrid id="painel2" columns="2">
+
+                        <h:outputLabel value="Nome:"></h:outputLabel>
+                        <h:inputText label='Funcionario' value='#{funcionarioBean.funcionario.nome}' 
+                                     required="true" requiredMessage="Preencha o seu nome"></h:inputText>  
+                       
+                        <h:outputLabel value="Função:"></h:outputLabel>
+                        <p:selectOneMenu value="#{funcionarioBean.funcionario.funcao}" style="width: 210px" 
+                                         required="true" requiredMessage="Preencha a sua função">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecionar função"></f:selectItem>
+                            <f:selectItem itemLabel="Desenvolvimento" itemValue="Desenvolvimento"></f:selectItem>
+                            <f:selectItem itemLabel="HelpDesk" itemValue="HelpDesk"></f:selectItem>
+                            <f:selectItem itemLabel="Financeiro" itemValue="Financeiro"></f:selectItem>
+                        </p:selectOneMenu>      
+
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Cadastrar" 
+                                         update=":formCadastro:painel :formListagem:tbl" 
+                                         actionListener="#{funcionarioBean.salvar}" icon="ui-icon-plusthick" >
+                        </p:commandButton>               
+
+                        <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+        </p:layoutUnit>
+
+
+    </p:layout>
+</ui:decorate>
+

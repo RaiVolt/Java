@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             xmlns:p="http://primefaces.org/ui"
+             template="template.xhtml"
+             xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <center><h1>Agendamentos e Implementações - Clientes</h1></center>
+    <p:fieldset>
+        <h:form>
+            <p:growl id="messages" showDetail="true" />
+
+            <h:panelGrid columnClasses="value">
+
+                <center><p:schedule style="margin-left: 15%" id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule"  locale="pt" timeZone="GMT-3">
+
+                        <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
+                        <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
+
+                    </p:schedule></center>
+
+            </h:panelGrid>
+
+            <p:dialog widgetVar="eventDialog" header="Detalhes" showEffect="clip" hideEffect="clip">
+                <h:panelGrid id="eventDetails" columns="2">
+                   
+
+
+                        <p:outputLabel for="os" value="Nro O.S:"/>
+                        <p:selectOneMenu id="os"  filter="true" required="true" 
+                                         converter="omnifaces.SelectItemsConverter" requiredMessage="Selecione uma Ordem de Serviço"
+                                         value="#{agendamentoBean.agendamento}">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione a Ordem de Serviço" />
+                            <f:selectItems value="#{agendamentoBean.os}" var="os"
+                                           itemValue="#{os}" itemLabel="#{os.id}" />
+                            <p:ajax listener="#{agendamentoBean.popular}" update=""/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="funcionario" value="Técnico:"/>
+                        <p:selectOneMenu id="funcionario"  filter="true" required="true"  
+                                         converter="omnifaces.SelectItemsConverter" requiredMessage="Selecione o Técnico"
+                                         value="#{agendamentoBean.agendamento.tecnico}">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um Técnico" />
+                            <f:selectItems value="#{agendamentoBean.fs}" var="fs"
+                                           itemValue="#{fs}" itemLabel="#{fs.nome}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="cliente" value="Cliente:" />
+                        <p:inputText id="cliente" value="#" required="true" />
+
+                        <p:outputLabel for="func" value="Titulo:" />
+                        <p:inputText id="func" value="#{scheduleView.event.title}" required="true" />
+
+                        <p:outputLabel for="from" value="Inicio:" />
+                        <p:calendar locale="pt_BR" id="from" value="#{scheduleView.event.startDate}" timeZone="GMT-3" pattern="dd/MM/yyyy HH:mm"/>
+
+                        <p:outputLabel for="to" value="As:" />
+                        <p:calendar locale="pt_BR" id="to" value="#{scheduleView.event.endDate}" timeZone="GMT-3" pattern="dd/MM/yyyy HH:mm"/>
+
+                        <p:outputLabel value="Suporte Técnico:" />
+                        <h:selectBooleanCheckbox id="suporte" value="#" />
+
+                        <p:outputLabel value="Instalação de Sistema:" />
+                        <h:selectBooleanCheckbox id="sistema" value="#" />
+
+                        <p:outputLabel for="allDay" value="Todo dia:" />
+                        <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
+
+                        <p:commandButton type="reset" value="Reset" />
+                        <p:commandButton id="addButton" value="Save" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+
+                   
+                </h:panelGrid>
+            </p:dialog>    
+
+        </h:form>
+    </p:fieldset>
+    <script type="text/javascript">
+        PrimeFaces.locales['pt'] = {
+            closeText: 'Fechar',
+            prevText: 'Anterior',
+            nextText: 'Próximo',
+            currentText: 'Começo',
+            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+            weekHeader: 'Semana',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: '',
+            timeOnlyTitle: 'Só Horas',
+            timeText: 'Tempo',
+            hourText: 'Hora',
+            minuteText: 'Minuto',
+            secondText: 'Segundo',
+            currentText: 'Data Atual',
+                    ampm: false,
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Dia',
+            allDayText: 'Todo Dia'
+        };
+    </script>
+    <style type="text/css">
+        .value {
+
+            width: 87.5em;
+        }
+    </style>
+
+</ui:decorate>
+

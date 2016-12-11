@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             xmlns:p="http://primefaces.org/ui"
+             template="template.xhtml"
+             xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <center><h1>Bem vindo ao sistema</h1></center>
+    <p:fieldset>
+        <span><h2>Últimas Ordens de Serviços</h2></span>
+        <h:form>
+            <p:dataTable value="#{ordemServicoBean.ordemServicos}" var="os" paginator="true" rows="6" >
+                <p:column headerText="Nro O.S" sortBy="#{os.id}" filterBy="#{os.id}" >
+                    <h:outputText value='#{os.id}'></h:outputText>
+                </p:column>
+
+                <p:column headerText="Cliente" sortBy="#{os.cliente.nomefantasia}" filterBy="#{os.cliente.nomefantasia}" >
+                    <h:outputText value="#{os.cliente.nomefantasia}"></h:outputText>
+                </p:column>
+
+                <p:column headerText="atendente" sortBy="#{os.atendente.nome}" filterBy="#{os.atendente.nome}" >
+                    <h:outputText value="#{os.atendente.nome}"></h:outputText>
+                </p:column>
+
+                <p:column headerText="Descrição" style="width: 28.125em" sortBy="#{os.descricao}" >
+                    <h:outputText value="#{os.descricao}"></h:outputText>
+                </p:column>
+
+                <p:column headerText="Data" sortBy="#{os.data}">
+                    <h:outputText value="#{os.data}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+                    </h:outputText>
+                </p:column>
+c
+                <p:column headerText="Hora"  sortBy="#{os.hora}" filterBy="#{os.hora}">
+                    <h:outputText value="#{os.hora}"> </h:outputText>
+                </p:column>
+
+                <p:column headerText="Status"  sortBy="#{os.status}" filterBy="#{os.status}" >
+                    <h:outputText value="#{os.status}"></h:outputText>
+                </p:column>
+
+<!--<p:column filterBy="#{os.status}" headerText="Status"  filterMatchMode="equals">
+    <f:facet name="filter">
+        <p:selectOneButton onchange="PF('carsTable').filter()">
+            <f:converter converterId="javax.faces.Boolean" />
+            <f:selectItem itemLabel="Todas" itemValue="" />
+            <f:selectItem itemLabel="Aberta" itemValue="true" />
+            <f:selectItem itemLabel="Encerrada" itemValue="false" />
+        </p:selectOneButton>
+    </f:facet>
+<h:outputText value="#{os.status ? 'Aberta': 'Encerrada'}" />
+</p:column>-->
+            </p:dataTable>
+        </h:form>
+    </p:fieldset>
+
+</ui:decorate>
+

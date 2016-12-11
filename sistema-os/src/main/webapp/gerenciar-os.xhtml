@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             template="template.xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:form>
+
+        <p:fieldset  id="field" legend="Inserindo Ordem de Serviço">
+            <p:panelGrid columns="10">
+                <h:outputLabel value="Cliente:"></h:outputLabel>
+                <p:selectOneMenu value="#{ordemServicoBean.ordemServico.cliente}" style="width: 10em"
+                                 converter="omnifaces.SelectItemsConverter"
+                                 required="true" requiredMessage="Selecione um cliente">
+                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um cliente" />
+                    <f:selectItems value="#{ordemServicoBean.cns}" var="cliente"
+                                   itemValue="#{cliente}" itemLabel="#{cliente.nomefantasia}" />
+                </p:selectOneMenu>
+
+                <h:outputLabel value="Atendente:"></h:outputLabel>
+                <p:selectOneMenu value="#{ordemServicoBean.ordemServico.atendente}" style="width: 10.125em"
+                                 converter="omnifaces.SelectItemsConverter" 
+                                 required="true" requiredMessage="Preencha um atendente">
+                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um funcionario" />
+                    <f:selectItems value="#{ordemServicoBean.fs}" var="funcionario"
+                                   itemValue="#{funcionario}" itemLabel="#{funcionario.nome}" />
+
+                </p:selectOneMenu> 
+
+                <h:outputLabel value="Data:"></h:outputLabel>
+                <p:calendar value="#{ordemServicoBean.ordemServico.data}" pattern="dd/MM/yyyy" mask="true" 
+                            required="true" requiredMessage="Selecione a data"></p:calendar>
+
+                <h:outputLabel value="Hora:"></h:outputLabel>
+                <p:inputMask  style="width: 3.75em" value="#{ordemServicoBean.ordemServico.hora}" mask="99:99" 
+                              required="true" requiredMessage="Preencha a hora"></p:inputMask>
+
+                <h:outputLabel value="Status:"></h:outputLabel>
+                <p:selectOneMenu value="#{ordemServicoBean.ordemServico.status}" style="width:7.375em"
+                                  required="true" requiredMessage="Selecione o status">
+                    <f:selectItem itemLabel="Selecionar" itemValue=""></f:selectItem>
+                    <f:selectItem itemLabel="Aberta" itemValue="Aberta"></f:selectItem>
+                    <f:selectItem itemLabel="Encerrado" itemValue="Encerrado"></f:selectItem>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <br></br>
+            <p:inputTextarea placeholder="Descriçāo" value="#{ordemServicoBean.ordemServico.descricao}" 
+                             rows="10" cols="141" counter="display" maxlength="800" 
+                             counterTemplate="{0} characters remaining." autoResize="false" 
+                             required="true" requiredMessage="Preencha a descrição"></p:inputTextarea>
+            <h:outputText id="display" />
+            <br></br>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Adicionar Ordem de Serviço" action="#{ordemServicoBean.salvar}" icon="ui-icon-plusthick" 
+                                     update="@all" ></p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </p:fieldset>
+
+        <p:dataTable id="tbl" value="#{ordemServicoBean.ordemServicos}" var="os" widgetVar="carsTable" emptyMessage="Nada encontrado" paginator="true" rows="6" >
+
+            <p:column  style="width: 6.875em" headerText="Opções" exportable="false">
+                <p:commandButton icon="ui-icon-trash"
+                                 actionListener="#{ordemServicoBean.excluir}"
+                                 update="@all">
+                    <p:confirm header="Confirmação" message="Deseja excluir a ordem de serviço?"
+                               icon="ui-icon-alert" />
+                    <f:attribute name="ordemservicoSelecionado" value="#{os}" />
+                </p:commandButton>
+
+                <p:commandButton icon="ui-icon-pencil"
+                                 actionListener="#{ordemServicoBean.editar}"
+                                 update=":formEditar:painel2"
+                                 oncomplete="PF('dialogo').show();">
+                    <f:attribute name="ordemservicoSelecionado" value="#{os}" />
+                </p:commandButton>
+                
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            </p:column>
+
+
+            <p:column headerText="Nro O.S" style="width: 6.875em" sortBy="#{os.id}" filterBy="#{os.id}">
+                <h:outputText value="#{os.id}"></h:outputText>
+            </p:column>
+
+            <p:column headerText="Cliente" sortBy="#{os.cliente.nomefantasia}" style="width: 12.5em" filterBy="#{os.cliente.nomefantasia}">
+                <h:outputText value="#{os.cliente.nomefantasia}" ></h:outputText>
+            </p:column>
+
+            <p:column headerText="Atendente" style="width: 6.875em" sortBy="#{os.atendente.nome}" filterBy="#{os.atendente.nome}" >
+                <h:outputText value="#{os.atendente.nome}"></h:outputText>
+            </p:column>
+
+
+            <p:column headerText="Descrição" sortBy="#{os.descricao}" >
+                <h:outputText value="#{os.descricao}" style="height: 4.375em"></h:outputText>
+            </p:column>
+
+            <p:column headerText="Data" style="width: 6.875em" sortBy="#{os.data}" >
+                <h:outputText value="#{os.data}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+                </h:outputText>
+            </p:column>
+
+
+            <p:column headerText="Hora" style="width: 7.5em" sortBy="#{os.hora}" filterBy="#{os.hora}">
+                <h:outputText style="margin-left: 1.875em" value="#{os.hora}"> </h:outputText>
+            </p:column>
+
+            <p:column headerText="Status" sortBy="#{os.status}" style="width: 6.25em" filterBy="#{os.status}" >
+                <h:outputText value="#{os.status}" ></h:outputText>
+            </p:column>
+
+        </p:dataTable>
+        <h:commandLink>
+            <p:graphicImage library="imagens" name="pdf.png" />
+            <p:dataExporter type="pdf" encoding="ISO-8859-1" target="tbl" fileName="ordens" pageOnly="true" />
+        </h:commandLink>
+    </h:form>
+
+    <p:dialog header="Ordem de Serviço - Editar" widgetVar="dialogo"
+              draggable="false" resizable="false" modal="false" closable="false">
+        <h:form id="formEditar">
+            <h:panelGrid id="painel2" columns="2">
+
+                <h:outputLabel value="Cliente:"></h:outputLabel>
+                <p:selectOneMenu value="#{ordemServicoBean.ordemServico.cliente}" style="width: 10em"
+                                 converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um cliente" />
+                    <f:selectItems value="#{ordemServicoBean.cns}" var="cliente"
+                                   itemValue="#{cliente}" itemLabel="#{cliente.nomefantasia}" />
+                </p:selectOneMenu>
+
+                <h:outputLabel value="Atendente:"></h:outputLabel>
+                <p:selectOneMenu value="#{ordemServicoBean.ordemServico.atendente}" style="width: 10.125em"
+                                 converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem noSelectionOption="true" itemLabel="Selecione um funcionario" />
+                    <f:selectItems value="#{ordemServicoBean.fs}" var="funcionario"
+                                   itemValue="#{funcionario}" itemLabel="#{funcionario.nome}" />
+
+                </p:selectOneMenu> 
+
+                <h:outputLabel value="Data:"></h:outputLabel>
+                <p:calendar value="#{ordemServicoBean.ordemServico.data}" pattern="dd/MM/yyyy" mask="true" ></p:calendar>
+
+                <h:outputLabel value="Hora:"></h:outputLabel>
+                <p:inputMask  style="width: 3.75em" value="#{ordemServicoBean.ordemServico.hora}" mask="99:99" ></p:inputMask>
+
+                <h:outputLabel value="Status:"></h:outputLabel>
+                <p:selectOneMenu value="#{ordemServicoBean.ordemServico.status}" style="width:7.375em">
+                    <f:selectItem itemLabel="Selecionar" itemValue=""></f:selectItem>
+                    <f:selectItem itemLabel="Aberta" itemValue="Aberta"></f:selectItem>
+                    <f:selectItem itemLabel="Encerrado" itemValue="Encerrado"></f:selectItem>
+                </p:selectOneMenu>
+            
+                <br></br>
+            <p:inputTextarea placeholder="Descriçāo" value="#{ordemServicoBean.ordemServico.descricao}" 
+                             rows="10" cols="40" maxlength="800" 
+                             autoResize="false"></p:inputTextarea>
+            
+
+            </h:panelGrid>
+
+            <h:panelGrid columns="2">
+                  <p:commandButton value="Adicionar Ordem de Serviço" actionListener="#{ordemServicoBean.salvar}"
+                                   icon="ui-icon-plusthick" 
+                                     update="@all" ></p:commandButton>
+               
+                <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+</ui:decorate>
+

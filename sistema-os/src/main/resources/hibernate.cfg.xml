@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+   
+        <!-- Configuração de Conexão com o Banco de Dados -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/sistemaos</property>
+        <property name="hibernate.connection.username">root</property>
+        
+        <!-- Pool de Conexões -->
+        <property name="hibernate.connection.pool_size">1</property>
+        
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        
+        <!-- Gerenciamento do Contexto das Sessões -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        <!-- Cache de Segundo Nível -->
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+        
+        <!-- Mostra as SQLs Geradas -->
+        <property name="hibernate.show_sql">true</property>
+        
+        <!-- Cria as tabelas do banco de dados -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        
+        
+        <!-- Mapeamento das Entidades com Chave Estrangeira -->
+        <mapping class="br.com.railsos.os.entidade.OrdemServico"/>
+         <mapping class="br.com.railsos.os.entidade.Agendamento"/>           
+        <!-- Mapeamento das Entidades  -->
+        <mapping class="br.com.railsos.os.entidade.ClienteNew"/>
+        <mapping class="br.com.railsos.os.entidade.Funcionario"/>
+        <mapping class="br.com.railsos.os.entidade.Login"/>
+        
+        
+    </session-factory>
+</hibernate-configuration>

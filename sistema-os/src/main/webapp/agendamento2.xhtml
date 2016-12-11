@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             xmlns:p="http://primefaces.org/ui"
+             template="template.xhtml"
+             xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:layout>
+        <p:layoutUnit position="center" resizable="false" closable="false" collapsible="false">
+            <p:growl id="mensagem" />
+
+            <h:form id="formListagem"  enctype="multipart/form-data">
+                <p:panel header="Filme - Listagem">
+                    <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                                 paginator="true" value="#{agendamentoBean.agendamentos}" var="agendamento" rows="5">
+                        <f:facet name="header">
+                            <p:commandButton value="Novo" actionListener="#{agendamentoBean.novo}"
+                                             oncomplete="PF('dialogo').show();"
+                                             update=":mensagem :formCadastro:painel" />
+                        </f:facet>
+
+                        <p:column headerText="Nro O.S" sortBy="#{agendamento.numeroOS.id}"
+                                  filterBy="#{agendamento.numeroOS.id}">
+                            <h:outputText value="#{agendamento.numeroOS.id}" />
+                        </p:column>
+
+
+                        <p:column headerText="Técnico" sortBy="#{agendamento.tecnico.nome}"
+                                  filterBy="#{agendamento.tecnico.nome}">
+                            <h:outputText value="#{agendamento.tecnico.nome}" />
+                        </p:column>
+
+
+                        <p:column headerText="Cliente" sortBy="#{agendamento.cliente.nomefantasia}"
+                                  filterBy="#{agendamento.cliente.nomefantasia}">
+                            <h:outputText value="#{agendamento.cliente.nomefantasia}" />
+                            <h:outputText value="min" />                                    
+                        </p:column>
+
+                        <p:column headerText="Título" sortBy="#{agendamento.titulo}"
+                                  filterBy="#{agendamento.titulo}">
+                            <h:outputText value="#{agendamento.titulo}" />
+                        </p:column>
+
+                        <p:column headerText="Inicio" sortBy="#{agendamento.inicio}"
+                                  filterBy="#{agendamento.inicio}">
+                            <h:outputText value="#{agendamento.inicio}" />
+                        </p:column>
+
+                        <p:column headerText="Fim" filterBy="#{agendamento.fim}"
+                                  sortBy="#{agendamento.fim}">
+                            <h:outputText value="#{agendamento.fim}" />
+                        </p:column>
+
+                        <p:column headerText="Suporte Técnico" sortBy="#{agendamento.ativoFormatadoday}">
+                            <h:outputText value="#{agendamento.ativoFormatadoday}" />
+                        </p:column>
+
+                        <p:column headerText="Instalação de Sistema" sortBy="#{agendamento.ativoFormatado}">
+                            <h:outputText value="#{agendamento.ativoFormatado}" />
+                        </p:column>
+
+                        <p:column headerText="Todo Dia" sortBy="#{agendamento.ativoFormatadois}">
+                            <h:outputText value="#{agendamento.ativoFormatadois}" />
+                        </p:column>
+
+                        <p:column headerText="Opções">
+                            <p:commandButton icon="ui-icon-trash"
+                                             actionListener="#{agendamentoBean.excluir}"
+                                             update=":mensagem :formListagem:tabela">
+                                <p:confirm header="Confirmação" message="Deseja excluir o agendamento?"
+                                           icon="ui-icon-alert" />
+                                <f:attribute name="agendamentoSelecionado" value="#{agendamento}" />
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-pencil"
+                                             actionListener="#{agendamentoBean.editar}"
+                                             update=":mensagem :formCadastro:painel"
+                                             oncomplete="PF('dialogo').show();">
+                                <f:attribute name="agendamentoSelecionado" value="#{agendamento}" />
+                            </p:commandButton>
+                        </p:column>
+
+
+                    </p:dataTable>
+
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Sim" type="button"
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="Não" type="button"
+                                         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </p:panel>
+            </h:form>
+
+            <p:dialog header="Agendamento - Cadastro" widgetVar="dialogo"
+                      draggable="false" resizable="false" modal="false" closable="false">
+                <h:form id="formCadastro">
+                    <h:panelGrid id="painel" columns="2">
+
+
+                        <p:outputLabel for="os" value="Nro O.S:"/>
+                        <p:selectOneMenu id="os"  filter="true" required="true" 
+                                         converter="omnifaces.SelectItemsConverter" requiredMessage="Selecione uma Ordem de Serviço"
+                                         value="#{agendamentoBean.agendamento.numeroOS}">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione a Ordem de Serviço" />
+                            <f:selectItems value="#{agendamentoBean.os}" var="os"
+                                           itemValue="#{os}" itemLabel="#{os.id}" />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="funcionario" value="Técnico:"/>
+                        <p:selectOneMenu id="funcionario"  filter="true" required="true"  
+                                         converter="omnifaces.SelectItemsConverter" requiredMessage="Selecione o Técnico"
+                                         value="#{agendamentoBean.agendamento.tecnico}">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um Técnico" />
+                            <f:selectItems value="#{agendamentoBean.fs}" var="fs"
+                                           itemValue="#{fs}" itemLabel="#{fs.nome}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="cliente" value="Cliente:" />
+                        <p:selectOneMenu id="cliente" value="#{agendamentoBean.agendamento.cliente}" style="width: 10em"
+                                         converter="omnifaces.SelectItemsConverter" required="true" requiredMessage="Selecione o Cliente" >
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um cliente" />
+                            <f:selectItems value="#{agendamentoBean.cns}" var="cliente"
+                                           itemValue="#{cliente}" itemLabel="#{cliente.nomefantasia}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="func" value="Titulo:" />
+                        <p:inputText id="func" value="#{agendamentoBean.agendamento.titulo}" required="true" requiredMessage="Preencha o Titulo"  />
+
+                        <p:outputLabel for="from" value="Inicio:" />
+                        <p:calendar locale="pt_BR" id="from" value="#{agendamentoBean.agendamento.inicio}" timeZone="GMT-3" pattern="dd/MM/yyyy HH:mm" required="true"/>
+
+                        <p:outputLabel for="to" value="Fim:" />
+                        <p:calendar locale="pt_BR" id="to" value="#{agendamentoBean.agendamento.fim}" timeZone="GMT-3" pattern="dd/MM/yyyy HH:mm" 
+                                    required="true" requiredMessage="Selecione a data final" />
+
+                        <p:outputLabel value="Suporte Técnico:" />
+                        <h:selectBooleanCheckbox id="suporte" value="#{agendamentoBean.agendamento.sTecnico}" />
+
+                        <p:outputLabel value="Instalação de Sistema:" />
+                        <h:selectBooleanCheckbox id="sistema" value="#{agendamentoBean.agendamento.iSistema}" />
+
+                        <p:outputLabel for="ativo" value="Todo Dia:" />
+                        <p:selectBooleanCheckbox id="ativo" value="#{agendamentoBean.agendamento.tDia}"/>
+
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Salvar" actionListener="#{agendamentoBean.salvar}"
+                                         update=":mensagem :formCadastro:painel :formListagem:tabela">
+                        </p:commandButton>
+                        <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:layoutUnit>
+
+    </p:layout>
+</ui:decorate>

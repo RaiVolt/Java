@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">  
+        <h:outputScript library="css" name="bootstrap.css"></h:outputScript>
+
+    <h:head>
+        <title>Rails OS</title>
+    </h:head>
+    <h:body rendered="#{loginBean.verificaSessao()}" onload="#{ordemServicoBean.listar()},#{clienteBeanNew.listar()},#{funcionarioBean.listar()}"> <!-- carregar os dados do banco quando a pagina carregar -->
+        <h:panelGrid columns="2">
+            <h:graphicImage library="imagens" name="os.png" width="50em" ></h:graphicImage>
+            <h1>Rails OS</h1>
+        </h:panelGrid>
+        <h:form>  
+            <p:growl id="messages"/>
+            <p:menubar>
+                <p:menuitem value="Home" url="index.xhtml" icon="ui-icon-home"></p:menuitem>
+                <p:menuitem value="Ordens de serviços" url="gerenciar-os.xhtml" icon="ui-icon-clock"></p:menuitem>
+                <p:menuitem value="Agendamentos" url="agendamento2.xhtml" icon="ui-icon-calendar"></p:menuitem>
+
+                <p:submenu label ="Cadastros" icon="ui-icon-note">
+                    <p:menuitem value="Clientes" url="cliente.xhtml" icon="ui-icon-person"></p:menuitem>
+                    <p:menuitem value="Funcionários" url="funcionario.xhtml" icon="ui-icon-wrench"></p:menuitem>
+                    <p:menuitem value="Usuários" url="user.xhtml" icon="ui-icon-person"></p:menuitem>
+                </p:submenu>
+                <p:submenu label ="Gráficos" icon="ui-icon-note">
+                    <p:menuitem value="Gráficos" url="graficosHome.xhtml" icon="ui-icon-clock"></p:menuitem>
+                    
+                </p:submenu>
+                
+                    
+                
+                <f:facet name="options">
+                    <p:inputText style="margin-right:10px" placeholder="Procurar"/>
+                    
+                    <h:commandButton value="SAIR" action="#{loginBean.fecharSessao}"></h:commandButton>
+                    <!--<p:commandButton  value="Logout" icon="ui-icon-power"  action="index.html?faces-redirect=true"  />-->
+                </f:facet>
+            </p:menubar>
+        </h:form>
+        <hr/>
+        <ui:insert></ui:insert>
+    </h:body>
+</html>
+

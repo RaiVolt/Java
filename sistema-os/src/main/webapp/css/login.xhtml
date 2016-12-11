@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+        <h:outputScript library="js" name="script.js"></h:outputScript>
+
+    <h:head>
+        <title>Rails O.S</title>
+    </h:head>
+    <h:body >
+        <h:form id="loginForm">
+            <p:layout fullPage="true">
+                <p:layoutUnit position="center">
+                    <p:fieldset >
+                        <h:panelGrid>
+                            <h:graphicImage library="imagens" name="fundo.jpg" width="100%" height="64%"></h:graphicImage>
+
+                            <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                            <p:dialog header="Tela de acesso" widgetVar="dlg" resizable="false" footer="Esqueceu sua senha?" >
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputLabel for="username" value="Username:" />
+                                    <p:inputText id="username" value="#{loginBean.login.username}" label="username" />
+
+                                    <h:outputLabel for="password" value="Senha:" />
+                                    <p:password id="password" value="#{loginBean.login.password}" label="password" />
+
+                                    <f:facet name="footer">
+                                        <p:commandButton  value="Login" update="growl"  action="#{loginBean.verificaDados}"
+                                                          oncomplete="handleLoginRequest(xhr, status, args)" 
+                                                          icon="ui-icon-key" style="left: 35%" />
+                                        
+                                    </f:facet>  
+                                </h:panelGrid>
+                            </p:dialog>
+                            
+                            <p:dialog header="Tela de acesso" widgetVar="dlgCad" resizable="false">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputLabel for="username" value="Username:" />
+                                    <p:inputText id="username2" value="#{loginBean.login.username}" label="username" />
+
+                                    <h:outputLabel for="password" value="Senha:" />
+                                    <p:password id="password2" value="#{loginBean.login.password}" label="password" />
+
+                                    <f:facet name="footer">
+                                        <p:commandButton  value="Ok" update="loginForm"  actionListener="#{loginBean.salvar}"
+                                                          icon="ui-icon-key" style="left: 35%" 
+                                                          oncomplete="PF('dlgCad').hide();"/>
+                                    </f:facet>  
+                                </h:panelGrid>
+                            </p:dialog>
+                            <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                                <center><p:commandButton  value="Entrar no sistema" icon="ui-icon-key"></p:commandButton>
+                                </center>
+                            </h:outputLink>
+                            <h:outputLink value="javascript:void(0)" onclick="PF('dlgCad').show();" title="login">
+                                <center><p:commandButton  value="Cadastrar" icon="ui-icon-key"></p:commandButton>
+                                </center>
+                            </h:outputLink>
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                    <center><p>Todos diretos Reservados&copy;</p></center>
+                    <center><p style="font-size: 12px">Projeto Java Web</p></center>
+
+                    <script type="text/javascript">
+                        function handleLoginRequest(xhr, status, args) {
+                            if (args.validationFailed || !args.loggedIn) {
+                                PF('dlg').jq.effect("shake", {times: 5}, 100);
+
+                            } else {
+                                PF('dlg').hide();
+                                $('#loginLink').fadeOut();
+                            }
+                        }
+                    </script>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </h:body>
+</html>
+
